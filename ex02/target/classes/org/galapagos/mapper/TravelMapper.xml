@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 매퍼 정의 문서라는 뜻 -->
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.galapagos.mapper.TravelMapper">
+	<sql id="criteria">
+		<trim prefixOverrides="OR">
+			<foreach item="type" collection="typeArr">
+				<trim prefix="OR">
+					<choose>
+						<when test="type == 'T'.toString()">
+							title like CONCAT('%',#{keyword},'%')
+						</when>
+						<when test="type == 'D'.toString()">
+							description like CONCAT('%',#{keyword},'%')
+						</when>
+						<when test="type == 'R'.toString()">
+							region like CONCAT('%',#{keyword},'%') </when>
+					</choose>
+				</trim>
+			</foreach>
+		</trim>
+	</sql>
+
+	<select id="getTotalCount" resultType="int">
+		select count(*) from travel
+		<where>
+			<include refid="criteria"></include>
+		</where>
+	</select>
+
+	<select id="getList" resultType="TravelVO">
+		select * from travel
+		<where>
+			<include refid="criteria"></include>
+		</where>
+		order by region, title
+		limit #{offset}, #{amount}
+		<!-- 여기서 #{offset}은 #({pageNum} -1) * #{amount} 이며, 수식은 oracle은 되지만, mysql은 
+			불가해서 그런 것이다. -->
+	</select>
+
+	<select id="read" resultType="TravelVO">
+		select * from travel
+		where no =
+		#{no}
+	</select>
+
+	<insert id="insert">
+		insert into travel(region, title, description, address, phone)
+		values (#{region}, #{title}, #{description}, #{address}, #{phone})
+
+		<!-- table pk 필드명 : no / keyColumn은 setNo로 값을 세팅하라는 뜻임. -->
+		<selectKey resultType="Long" keyProperty="no"
+			keyColumn="bno" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+	
+	<update id="update">
+		update travel set
+			title = #{title},
+			description = #{description},
+			address = #{address},
+			phone = #{phone}
+		where no = #{no}
+	</update>
+	
+	<delete id="delete">
+		delete from travel where no = #{no}
+	</delete>
+</mapper>

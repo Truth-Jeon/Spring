@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+	 "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 인터페이스 풀네임을 적어줄 것. -->
+<mapper namespace="org.galapagos.mapper.TimeMapper">
+	<select id="getTime2" resultType="string">
+		SELECT SYSDATE()
+	</select>
+</mapper>
