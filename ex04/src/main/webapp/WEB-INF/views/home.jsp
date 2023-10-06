@@ -8,21 +8,25 @@
 </head>
 <body>
 <h1>
-	Hello <sec:authentication property="principal.username"/>
+	Hello
+	<sec:authorize access="isAuthenticated()">
+        <sec:authentication property="principal.username"/>  
+    </sec:authorize>
 </h1>
 
 <P>  The time on the server is ${serverTime}. </P>
 
-<!-- isAnonymouns() == true : 로그인 안했다는 뜻. -->
+<!-- isAnonymouns() == true : 로그인 안했다는 뜻. = 로그아웃 -->
 <sec:authorize access="isAnonymous()">
 	<a href="/security/login">로그인</a>
 </sec:authorize>
 
 <br>
 
-<!-- isAuthenticated() == true : 로그아웃 안했다는 뜻. -->
+<!-- isAuthenticated() == true : 로그아웃 안했다는 뜻. = 로그인 -->
 <sec:authorize access="isAuthenticated()">
 	<sec:authentication property="principal.username"/>
+	<br>
 	<form action="/security/logout" method="post">
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		<input type="submit" value="로그아웃"/>
