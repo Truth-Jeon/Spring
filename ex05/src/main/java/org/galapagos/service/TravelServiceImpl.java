@@ -1,5 +1,8 @@
 package org.galapagos.service;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+
+import java.security.Principal;
 import java.util.List;
 
 import org.galapagos.domain.Criteria;
@@ -25,14 +28,29 @@ public class TravelServiceImpl implements TravelService {
 	}
 
 	@Override
-	public List<TravelVO> getList(Criteria cri) {
-		return mapper.getList(cri);
+	public List<TravelVO> getList(Criteria cri, Principal principal) {
+//		return mapper.getList(cri);
+		List<TravelVO> list = mapper.getList(cri);
+		if(principal != null) {
+			List<Long> hearts = mapper.getHeartsList(principal.getName()); //username 추출
+			for(TravelVO travel:list) {
+				travel.setMyHeart(hearts.contains(travel.getNo()));
+			}
+		}
+		return list;
 	}
 
+	//상세보기
 	@Override
-	public TravelVO get(Long no) {
+	public TravelVO get(Long no, Principal principal) {
 		// 조회수 처리
-		return mapper.read(no);
+//		return mapper.read(no);
+		TravelVO travel = mapper.read(no);
+		if(principal != null) {
+			List<Long> hearts = mapper.getHeartsList(principal.getName());
+			travel.setMyHeart(hearts.contains(travel.getNo()));
+		}
+		return travel;
 	}
 
 	@Override

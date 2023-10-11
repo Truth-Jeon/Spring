@@ -10,6 +10,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css"/>
 
+<c:if test="${not empty username}">
 <script>
 	$(document).ready(function() {
 		
@@ -67,13 +68,64 @@
 	}
 </style>
 
+<script src="/resources/js/rest.js"></script>
+<script>
+	$(document).ready(function() {
+		let username = '${username}';
+		
+		const BASE_URL = '/api/travel/heart';
+		
+		//좋아요 추가
+		$('span.heart').on('click', '.fa-heart.fa-regular', async function(e){
+			let tno = parseInt($(this).data("tno"));
+			let heart = {tno, username};//HeartVO랑 맵핑
+			console.log(heart);
+			
+			//.closest() -> () 안에 들어가는 조건을 만족하는 근처의 부모태그
+			//.find() 자식 클래스 찾는 메소드..
+			await rest_create(BASE_URL + "/add", heart);
+			let heartCount = $(this).parent().find(".heart-count");
+			console.log(heartCount);
+			let count = parseInt(heartCount.text());
+			heartCount.text(count+1);
+			
+			//아이콘교체
+			$(this)
+				.removeClass('fa-regular')
+				.addClass('fa-solid');
+		});
+		
+		//좋아요 제거
+		$('span.heart').on('click', '.fa-heart.fa-solid', async function(e){
+			let tno = parseInt($(this).data("tno"));
+			await rest_delete(`\${BASE_URL}/delete?tno=\${tno}&username=\${username}`);
+			let heartCount = $(this).parent().find(".heart-count");
+			console.log(heartCount);
+			let count = parseInt(heartCount.text());
+			heartCount.text(count-1);
+			
+			$(this)
+				.removeClass('fa-solid')
+				.addClass('fa-regular');
+		});
+	});
+</script>
+</c:if>
+
 <br>
 <h1 class="page-header">
 	<i class="fa-solid fa-mountain-sun"></i> ${travel.title}
 </h1>
 
-<div class="d-flex justify-content-between">
-	<div>${travel.region}</div>
+<!-- <div class="d-flex justify-content-between"> -->
+<div class="d-flex justify-content-end">
+<%-- 	<div>${travel.region}</div> --%>
+	<span class="heart px-3">
+		<i class="${ travel.myHeart ? 'fa-solid' : 'fa-regular' } fa-heart text-danger"
+			data-tno="${travel.no}"></i>
+		<span class="heart-count">${travel.hearts}</span>
+	</span>
+	<br>
 	<div>
 		<i class="fa-solid fa-phone"></i> ${travel.phone}
 	</div>

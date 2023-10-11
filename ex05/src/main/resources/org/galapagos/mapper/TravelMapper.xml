@@ -46,6 +46,21 @@
 		order by rand()
 		limit #{count}
 	</select>
+	
+	<select id="getHeartsList" resultType="long">
+		select tno from tbl_travel_heart
+		where username = #{username}
+	</select>
+	
+	<insert id="addHeart">
+		insert into tbl_travel_heart(tno, username)
+		values (#{tno}, #{username})
+	</insert>
+	
+	<delete id="deleteHeart">
+		delete from tbl_travel_heart
+		where tno = #{tno} and username = #{username}
+	</delete>
 
 	<select id="read" resultType="TravelVO">
 		select * from view_travel

@@ -12,7 +12,7 @@ async function rest_create(url, data) {
 		let res = await fetch(url, {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify(data),
+			body: JSON.stringify(data), //json문자열로 인코딩
 		});
         return await res.json();
 	} catch(e) {
@@ -28,7 +28,7 @@ async function rest_modify(url, data) {
 			body: JSON.stringify(data),
 		});
 		
-		return await res.json();
+		return await res.json(); //JSON.parse()로 변환
 	} catch(e) {
 		console.log(e);
 	}

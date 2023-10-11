@@ -26,7 +26,10 @@ public class TravelVO {
 	private String address;
 	
 	private String phone;
+	
 	private String hearts;
+	
+	private Boolean myHeart;
 	
 	public String getImage() {
 		int i = new Random().nextInt(5) + 1;
