@@ -144,6 +144,17 @@
 	</div>
 </div>
 
+<div class="text-end">
+	<c:forEach var="file" items="${board.attaches}">
+		<div class="attach-file-item">
+			<a href="/board/download/${file.no}" class="file-link"> <i
+				class="fa-solid fa-floppy-disk"></i> ${file.filename}
+				(${file.formatSize})<br>
+			</a>
+		</div>
+	</c:forEach>
+</div>
+
 <hr>
 
 <div class="my-4">${board.content}</div>

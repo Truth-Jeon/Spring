@@ -1,7 +1,5 @@
 package org.galapagos.domain;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
-
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;

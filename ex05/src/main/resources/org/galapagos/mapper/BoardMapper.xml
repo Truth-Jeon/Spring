@@ -40,8 +40,7 @@
 
 	<insert id="insertSelectKey">
 		insert into tbl_board(title, content, writer)
-		values (#{title},
-		#{content}, #{writer})
+		values (#{title}, #{content}, #{writer})
 
 		<!-- table pk 필드명 : bno / keyColumn은 setBno로 값을 세팅하라는 뜻임. -->
 		<selectKey resultType="Long" keyProperty="bno"
@@ -109,4 +108,26 @@
 			<include refid="criteria"></include>
 		</where>
 	</select>
+	
+	<insert id="insertAttachment">
+		insert into tbl_board_attachment(filename, path, content_type, size, bno)
+		values(#{filename}, #{path}, #{contentType}, #{size}, #{bno})
+	</insert>
+	
+	<!-- select 2번 실행하겠다는 뜻. join 안하고.. -->
+	<select id="getAttachmentList" resultType="BoardAttachmentVO">
+		select * from tbl_board_attachment
+		where bno = #{bno}
+		order by filename
+	</select>
+	
+	<select id="getAttachment" resultType="BoardAttachmentVO">
+		select * from tbl_board_attachment
+		where no = #{no}
+	</select>
+	
+	<delete id="removeAttachment">
+		delete from tbl_board_attachment
+		where no = #{no}
+	</delete>
 </mapper>

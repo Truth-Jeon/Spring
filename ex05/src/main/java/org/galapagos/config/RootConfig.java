@@ -10,7 +10,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -21,6 +24,8 @@ import com.zaxxer.hikari.HikariDataSource;
 		"org.galapagos.controller"
 })
 @MapperScan(basePackages = { "org.galapagos.mapper" })
+@EnableAspectJAutoProxy
+@EnableTransactionManagement
 public class RootConfig {
 	@Autowired
 	ApplicationContext applicationContext;
@@ -50,5 +55,11 @@ public class RootConfig {
 		// dataSource() 메소드가 등록한 Bean을 달라는 뜻.
 		sqlSessionFactory.setDataSource(dataSource()); // dataSource() 메서드 호출
 		return (SqlSessionFactory) sqlSessionFactory.getObject();
+	}
+	
+	@Bean
+	public DataSourceTransactionManager transactionManager() {
+		DataSourceTransactionManager manager = new DataSourceTransactionManager(dataSource());
+		return manager;
 	}
 }

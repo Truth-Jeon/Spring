@@ -42,9 +42,13 @@ public class ServletConfig implements WebMvcConfigurer {
 	public CommonsMultipartResolver getResolver() throws IOException {
 		CommonsMultipartResolver resolver = new CommonsMultipartResolver();
 
-		resolver.setMaxUploadSize(1024 * 1024 * 40); // 40MB, -1 : 크기 제한 없음(무제한)
-		resolver.setMaxUploadSizePerFile(1024 * 1024 * 20); // 20MB, -1 : 크기 제한 없음(무제한)
-		resolver.setMaxInMemorySize(1024 * 1024); // 1MB
+//		resolver.setMaxUploadSize(1024 * 1024 * 40); // 40MB, -1 : 크기 제한 없음(무제한)
+//		resolver.setMaxUploadSizePerFile(1024 * 1024 * 20); // 20MB, -1 : 크기 제한 없음(무제한)
+		
+		resolver.setMaxUploadSize(-1); // 40MB, -1 : 크기 제한 없음(무제한)
+		resolver.setMaxUploadSizePerFile(-1); // 20MB, -1 : 크기 제한 없음(무제한)
+		
+		resolver.setMaxInMemorySize(1024 * 1024); // 1MB, 1MB보다 크기가 작으면 메모리에 저장됨. 그 이상일 경우 지정된 폴더에 저장.
 
 		resolver.setUploadTempDir(new FileSystemResource("/Users/jeonhayoon/temp"));
 		resolver.setDefaultEncoding("UTF-8");
