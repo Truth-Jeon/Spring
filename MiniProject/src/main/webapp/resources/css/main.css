@@ -1,0 +1,29 @@
+@import
+	url('https://fonts.googleapis.com/css2?family=Single+Day&display=swap');
+
+* {
+	font-family: 'Single Day';
+}
+
+.avatar-sm {
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+}
+
+.jumbotron {
+	background-image: url("/resources/images/newjeans.png");
+	background-size: 100% 100%;
+}
+
+.jumbotron>h1 {
+	color: white;
+}
+
+.jumbotron>p {
+	color: white;
+}
+
+a.page-link {
+	border-width: 0px;
+}

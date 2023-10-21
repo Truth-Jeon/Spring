@@ -1,19 +1,19 @@
 package org.galapagos.service;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
-
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 
 import org.galapagos.domain.Criteria;
 import org.galapagos.domain.TravelVO;
-import org.galapagos.mapper.BoardMapper;
+import org.galapagos.domain.kakao.LocalResult;
 import org.galapagos.mapper.TravelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
+import retrofit2.Call;
+import retrofit2.Response;
 
 @Log4j
 @Service //새로운 어노테이션 등장! 빈 등록이 일어남. (빼먹는 실수 하지 말자.)
@@ -50,6 +50,26 @@ public class TravelServiceImpl implements TravelService {
 			List<Long> hearts = mapper.getHeartsList(principal.getName());
 			travel.setMyHeart(hearts.contains(travel.getNo()));
 		}
+		
+		//주변 검색.
+//		String query = "주변 볼거리 " + travel.getTitle();
+		String query = travel.getTitle();
+		KakaoSearchService service = KakaoSearchService.getService();
+		Call<LocalResult> call = service.searchLocal(query, 10, 1);
+		Response<LocalResult> res;
+		try {
+			res = call.execute();
+			if(res.isSuccessful()) {
+				LocalResult result = res.body();
+				log.info("=====> " + result);
+				travel.setLocals(result.getLocals());
+			} else {
+				log.info("호출 실패 =====> " + res);
+			}
+		}catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		return travel;
 	}
 

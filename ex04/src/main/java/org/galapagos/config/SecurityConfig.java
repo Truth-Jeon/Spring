@@ -54,6 +54,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/security/admin").access("hasRole('ROLE_ADMIN')") // 특정 역할에만 허용
 				.antMatchers("/security/member").access("hasRole('ROLE_MEMBER')")// 특정 역할에만 허용
 //		.antMatchers("/board/write","/board/modify", "/board/list").authenticated()//로그인 사용자에게만 허용
+				.mvcMatchers("/","/css/**","/scripts/**","/plugin/**","/fonts/**")
+				.permitAll()
 		;
 
 		http.formLogin()// 로그인 폼 설정 시작, default

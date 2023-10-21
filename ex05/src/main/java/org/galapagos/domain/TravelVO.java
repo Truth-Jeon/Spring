@@ -1,12 +1,12 @@
 package org.galapagos.domain;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import javax.validation.constraints.NotBlank;
+
+import org.galapagos.domain.kakao.Local;
 
 import lombok.Data;
 
@@ -30,6 +30,8 @@ public class TravelVO {
 	private String hearts;
 	
 	private Boolean myHeart;
+	
+	List<Local> locals; //주변 검색 결과 목록
 	
 	public String getImage() {
 		int i = new Random().nextInt(5) + 1;
