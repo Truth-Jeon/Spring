@@ -38,7 +38,7 @@ public class SecurityController {
 		log.info("login page");
 	}
 	
-	@GetMapping("/signup") // => security/login
+	@GetMapping("/signup") // => security/signup
 	public void signup(@ModelAttribute("member") MemberVO member) {
 		log.info("signup page");
 	}
